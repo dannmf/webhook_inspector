@@ -1,9 +1,9 @@
-import { CopyIcon } from "lucide-react";
-import { IconButton } from "./ui/icon-button";
-import { WebhooksList } from "./webhooks-list";
+import { CopyIcon } from 'lucide-react'
+import { IconButton } from './ui/icon-button'
+import { WebhooksList } from './webhooks-list'
 
-export function Sidebar(){
-  return(
+export function Sidebar() {
+  return (
     <div className="flex h-screen flex-col">
       <div className="flex items-center justify-between border-b border-zinc-700 px-4 py-5">
         <div className="flex items-baseline">
@@ -16,10 +16,9 @@ export function Sidebar(){
           <span className="truncate">http://localhost:3333/api/capture</span>
         </div>
         <IconButton icon={<CopyIcon className="size-4" />}></IconButton>
-
       </div>
       <div className="items-start">
-      <WebhooksList/>
+        <WebhooksList />
       </div>
     </div>
   )
