@@ -11,7 +11,7 @@ export const getWebhook: FastifyPluginAsyncZod = async (app) => {
             schema: {
                 summary: 'Get a specific webhook by ID',
                 tags: ['Webhooks'],
-                querystring: z.object({
+                params: z.object({
                     id: z.uuidv7(),
                 }),
                 response: {
@@ -22,7 +22,7 @@ export const getWebhook: FastifyPluginAsyncZod = async (app) => {
             },
         },
         async (request, reply) => {
-            const { id } = request.query
+            const { id } = request.params
             const result = await db
               .select()
               .from(webhooks)
