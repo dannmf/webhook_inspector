@@ -1,5 +1,4 @@
-import type { ComponentProps } from "react"
-import { SectionTile } from "./section-title"
+import type { ComponentProps } from "react" 
 import { twMerge } from "tailwind-merge"
 
 interface SectionDataTableProps extends ComponentProps<'div'> {
@@ -12,6 +11,7 @@ export function SectionDataTable({className,data, ...props}: SectionDataTablePro
 
           <div className={twMerge('overflow-hidden rounded-lg border border-zinc-700', className)} {...props}>
             <table className='w-full'>
+              <tbody>
               {data.map(item => {
                 return(
                   <tr key={item.key} className='border-b border-zinc-700 last-border-0'>
@@ -24,6 +24,7 @@ export function SectionDataTable({className,data, ...props}: SectionDataTablePro
                   </tr>
                 )
               })}
+              </tbody>
             </table>
           </div>
 
