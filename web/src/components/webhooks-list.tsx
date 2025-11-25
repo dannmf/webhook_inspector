@@ -1,8 +1,8 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query'
 import { WebhooksListItem } from './webhooks-list-item'
 import { webhookListSchema } from '../http/schemas/webhooks'
-import { Loader2 } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { Loader2, Wand2 } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
 export function WebhooksList() {
   const loadMoreRef = useRef<HTMLDivElement>(null)
@@ -56,23 +56,56 @@ export function WebhooksList() {
 
   },[hasNextPage, isFetchingNextPage, fetchNextPage])
 
+  const [checkedWebhookIds, setCheckedWebhookIds] = useState<string[]>([])
+  function handleCheckWebhook(checkedWebhookId: string){
+    if(checkedWebhookIds.includes(checkedWebhookId)){
+      setCheckedWebhookIds(state => {
+        return state.filter(webhookId => webhookId !== checkedWebhookId)
+      })
+    } else {
+      setCheckedWebhookIds(state => [...state, checkedWebhookId])
+    }
+  }
+
+  function handleGenerateHandler(){
+    console.log(checkedWebhookIds)
+  }
+
+  const hasAnyWebhookChecked = checkedWebhookIds.length > 0
+
   return (
-    <div className="space-y-1 p-2">
-      {webhooks.map((webhook) => {
-        return <WebhooksListItem key={webhook.id} webhook={webhook} />
-      })}
 
+      <div className="flex-1 overflow-y-auto">
+        <div className="space-y-1 p-2 ">
 
-      {hasNextPage && (
-        <div className="p-2" ref={loadMoreRef}>
-          {isFetchingNextPage && (
-            <div className="flex items-center justify-content py-2">
-              <Loader2 className="size-5 animate-spin text-zin-500" />
-            </div>
-          )}
+            <button onClick={() => handleGenerateHandler()} disabled={!hasAnyWebhookChecked} className="w-full bg-indigo-400 flex items-center justify-center gap-3 mb-3 font-medium text-sm disabled:opacity-50 rounded-lg py-2.5">
+              <Wand2 className='size-4'/>
+              Gerar handler
+            </button>
+
+          {webhooks.map((webhook) => {
+            return (
+              <WebhooksListItem
+              key={webhook.id}
+              webhook={webhook}
+              onWebhookChecked={handleCheckWebhook}
+              isWebhookChecked={checkedWebhookIds.includes(webhook.id)}
+              />
+            )})}
         </div>
-      )}
-    </div>
+
+        {hasNextPage && (
+          <div className="p-2" ref={loadMoreRef}>
+            {isFetchingNextPage && (
+              <div className="flex items-center justify-content py-2">
+                <Loader2 className="size-5 animate-spin text-zin-500" />
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
+
 
   )
 }
